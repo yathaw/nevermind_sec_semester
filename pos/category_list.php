@@ -1,5 +1,13 @@
 <?php 
 	require 'backendheader.php';
+    require 'connection.php';
+
+    $sql = "SELECT * FROM categories ORDER BY name";
+    $statement = $pdo->prepare($sql);
+    $statement->execute();
+
+    $categories = $statement->fetchAll();
+
 ?>
 
 	<!-- Page Heading -->
@@ -9,6 +17,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">All Lists</h6>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="category_new.php" class="btn btn-outline-info" >Add New</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -30,10 +41,18 @@
                         </tr>
                     </tfoot>
                     <tbody>
+
+                        <?php 
+                            $i = 1;
+                            foreach($categories as $category){
+                            $id = $category['id'];
+                            $logo = $category['logo'];
+                            $name = $category['name'];
+                        ?>
                     	<tr>
-                    		<td> 1. </td>
-                    		<td> Fashion </td>
-                    		<td> <img src=""> </td>
+                            <td> <?php echo $i++; ?> . </td>
+                    		<td> <?php echo $name; ?> </td>
+                    		<td> <img src="<?= $logo; ?>" class="w-25"> </td>
                     		<td>
                     			<a href="" class="btn btn-outline-warning"> 
                     				<i class="far fa-edit"></i> Edit 
@@ -44,7 +63,12 @@
                     			</a>
                     		</td>
                     	</tr>
+
+                        <?php } ?>
+
                     </tbody>
+
+
                 </table>
             </div>
         </div>
